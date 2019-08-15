@@ -5,3 +5,17 @@
 // и экшн showRequest.
 
 // В методе componentDidMount вам нужно будет диспатчить showRequest action
+import React, { Component } from 'react';
+
+export default class ShowPage extends Component{
+
+  render() {
+
+    return(
+      <div>
+        test
+      </div>
+    )
+  }
+
+}
