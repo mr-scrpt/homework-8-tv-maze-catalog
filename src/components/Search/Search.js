@@ -18,9 +18,10 @@ class Search extends Component {
   }
 
   render() {
-    const {serials} = this.props;
-    console.log(this.props);
+    const {shows: {serials, isLoading, isError}} = this.props;
+
     //const serials = [{name: "Название 1"},{name: "Название 2"},{name: "Название 1"}];
+    if (isLoading) return <p>Данные загружаются</p>;
     return (
       <React.Fragment>
         <div className={Style.previewList}>

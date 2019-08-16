@@ -1,11 +1,10 @@
 import {createStore} from 'redux';
-
-const reducer = (previousState, action) => previousState;
+import rootReducer from './reducers';
 
 const INITIAL_STATE = {};
 
 const store = createStore(
-  reducer,
+  rootReducer,
   INITIAL_STATE,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
