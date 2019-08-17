@@ -1,38 +1,30 @@
 import {
-  getSeriesRequest,
-  getSeriesSuccess,
-  getSeriesFailure
+  entitiesRequest,
+  entitiesSuccess,
 } from '../actions/actions';
 
 const initialState = {
-  serials: [],
-  isLoading: false,
-  error: null
+  entities: [],
+  isFetching: false
 };
 
 
 
 export default (state = initialState, action) =>{
   switch (action.type) {
-    case getSeriesRequest.toString():
+    case entitiesRequest.toString():
       return{
         ...state,
-        serials: [],
-        isLoading: true
+        entities: [],
+        isFetching: true
       };
-    case getSeriesSuccess.toString():
+    case entitiesSuccess.toString():
       return {
         ...state,
-        serials: action.payload,
-        isLoading: false
+        entities: action.payload,
+        isFetching: false
       };
-    case getSeriesFailure.toString():{
-      return {
-        ...state,
-        error: action.payload,
-        isLoading: false
-      }
-    }
+
     default: return state
   }
 }

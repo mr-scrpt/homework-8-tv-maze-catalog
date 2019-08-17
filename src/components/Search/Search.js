@@ -7,33 +7,47 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Style from './Search.module.css'
 import ShowPreview from '../ShowPreview';
-import {getSeriesRequest} from '../../actions/actions';
+import {searchRequest} from '../../actions/actions';
 
 
 class Search extends Component {
 
-  componentDidMount() {
-    const { getSeriesRequest } = this.props;
-    getSeriesRequest();
-  }
+  state={
+    searchLabel: ''
+  };
 
+  sendRequest = ()=>{
+    const { searchRequest } = this.props;
+    const {searchLabel} = this.state;
+    searchRequest(searchLabel);
+  };
   render() {
-    const {shows: {serials, isLoading, isError}} = this.props;
+    const {search: {result, isFetching, isError}} = this.props;
+    const {searchLabel} = this.state;
+    if (isFetching) return <p>Данные загружаются</p>;
+    if (isError) return <p>Ошибка при загрузке данных</p>;
 
-    //const serials = [{name: "Название 1"},{name: "Название 2"},{name: "Название 1"}];
-    if (isLoading) return <p>Данные загружаются</p>;
     return (
       <React.Fragment>
         <div className={Style.previewList}>
-          <input type="text" className={Style.input} placeholder="Название сериала"/>
+          <input
+            type="text" className={Style.input}
+            placeholder="Название сериала"
+            value={searchLabel}
+            onChange={(e)=>{
+              this.setState({
+                searchLabel: e.target.value
+              });
+            }}
+          />
           <div className={Style.buttonWrapper}>
-            <button className={Style.button}>
+            <button className={Style.button} onClick={this.sendRequest}>
               Найти
             </button>
           </div>
         </div>
         <div className={`t-search-result ${Style.searchPanel}`}>
-          {serials && serials.map(item => <ShowPreview {...item}/>)}
+          {result && result.map(item => <ShowPreview {...item}  key={item.id}/>)}
         </div>
       </React.Fragment>
     )
@@ -41,7 +55,7 @@ class Search extends Component {
 }
 
 const mapStateToProps = state => state;
-const mapDispatchToProps = { getSeriesRequest };
+const mapDispatchToProps = { searchRequest };
 export default connect(
   mapStateToProps,
   mapDispatchToProps,

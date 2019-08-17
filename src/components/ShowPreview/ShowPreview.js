@@ -2,13 +2,18 @@
 // Он должен показывать название, описание и картинку шоу.
 import React, { Component } from 'react';
 import Style from './ShowPreview.module.css';
+import {Link} from 'react-router-dom';
 
 export default class ShowPreview extends Component{
   render() {
-    const {name} = this.props;
+    const {name, id, image: {medium}, summary} = this.props;
+
+
     return(
       <div className={`t-preview ${Style.container}`}>
-        {name}
+        <Link to={`shows/${id}`}>{name}</Link>
+        <img src={medium} alt=""/>
+        <p>{summary}</p>
       </div>
     )
   }
