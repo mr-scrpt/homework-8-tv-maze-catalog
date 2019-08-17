@@ -1,9 +1,53 @@
+import {handleActions} from 'redux-actions';
+import {combineReducers} from 'redux';
+import {createSelector} from 'reselect';
+
 import {
   searchRequest,
   searchSuccess,
   searchFailure
 } from '../actions/actions';
 
+
+const result = handleActions({
+  [searchRequest]: () => [],
+  [searchSuccess]: (_state, action) => action.payload
+}, []);
+
+const isFetching = handleActions({
+  [searchRequest]: () => true,
+  [searchSuccess]: () => false,
+  [searchFailure]: () => false
+}, false);
+
+const error = handleActions({
+  [searchRequest]: () => null,
+  [searchFailure]: (_store, action) => action.payload
+}, null);
+
+export default combineReducers({
+  result,
+  isFetching,
+  error
+})
+
+//Селекторы
+export const getResult = createSelector(
+  state => state.result,
+  result => result.map(
+    ({id, name, image: {medium}, summary}) =>({
+      id,
+      name,
+      image: medium,
+      summary
+    })
+  )
+);
+
+
+export const getError = state => state.error;
+export const getFetching = state => state.isFetching;
+/*
 const initialState = {
   result: [],
   isFetching: false,
@@ -36,3 +80,4 @@ export default (state = initialState, action) =>{
     default: return state
   }
 }
+*/

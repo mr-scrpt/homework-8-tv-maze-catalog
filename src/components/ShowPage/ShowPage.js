@@ -9,6 +9,7 @@ import React, { Component } from 'react';
 import {connect} from "react-redux";
 import Style from './ShowPage.module.css'
 import {entitiesRequest} from "../../actions/actions";
+import {getFetching, getEntities} from '../../reducers/shows';
 
 class ShowPage extends Component{
 
@@ -19,12 +20,12 @@ class ShowPage extends Component{
 
   render() {
 
-    const {shows: {entities: {name, summary, _embedded, image }, isFetching}} = this.props;
+    const {entities: {name, summary, _embedded, image }, isFetching} = this.props;
+
     if (isFetching) return <p>Данные загружаются</p>;
-    console.log(_embedded);
     return(
       <>
-        <p>{name && name}</p>
+        <p>{name}</p>
         { image && image.medium && <img src={image.medium } alt="image"/> }
         <div>{summary && summary}</div>
         <div className={Style.cast}>
@@ -43,7 +44,12 @@ class ShowPage extends Component{
   }
 }
 
-const mapStateToProps = state => state;
+//const mapStateToProps = state => state;
+
+const mapStateToProps = state => ({
+  entities: getEntities(state.shows),
+  isFetching: getFetching(state.shows)
+});
 const mapDispatchToProps = { entitiesRequest };
 
 

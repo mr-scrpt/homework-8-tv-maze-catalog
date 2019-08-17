@@ -12,7 +12,9 @@ import {search} from '../api';
 
 export const searchMiddleware = store => next => action => {
   if (action.type === searchRequest.toString()) {
+    console.log(searchRequest.toString());
     const query = action.payload;
+
     search(query)
       .then(res => {
         store.dispatch(searchSuccess(res));
@@ -22,4 +24,5 @@ export const searchMiddleware = store => next => action => {
       })
   }
   next(action);
+
 };

@@ -8,6 +8,7 @@ import {connect} from 'react-redux';
 import Style from './Search.module.css'
 import ShowPreview from '../ShowPreview';
 import {searchRequest} from '../../actions/actions';
+import {getResult, getFetching, getError} from '../../reducers/search';
 
 
 class Search extends Component {
@@ -17,12 +18,14 @@ class Search extends Component {
   };
 
   sendRequest = ()=>{
+    console.log('test here');
     const { searchRequest } = this.props;
     const {searchLabel} = this.state;
     searchRequest(searchLabel);
   };
   render() {
-    const {search: {result, isFetching, isError}} = this.props;
+    const {result, isFetching, isError} = this.props;
+    console.log(result);
     const {searchLabel} = this.state;
     if (isFetching) return <p>Данные загружаются</p>;
     if (isError) return <p>Ошибка при загрузке данных</p>;
@@ -31,7 +34,7 @@ class Search extends Component {
       <React.Fragment>
         <div className={Style.previewList}>
           <input
-            type="text" className={Style.input}
+            type="text" className={`${Style.input} t-input`}
             placeholder="Название сериала"
             value={searchLabel}
             onChange={(e)=>{
@@ -41,7 +44,7 @@ class Search extends Component {
             }}
           />
           <div className={Style.buttonWrapper}>
-            <button className={Style.button} onClick={this.sendRequest}>
+            <button className={`${Style.button} t-search-button`} onClick={this.sendRequest}>
               Найти
             </button>
           </div>
@@ -54,7 +57,29 @@ class Search extends Component {
   }
 }
 
-const mapStateToProps = state => state;
+const mapStateToProps = state => {
+  console.log(state);
+  return {
+    result: getResult(state.search),
+    isFetching:getFetching(state.search),
+    isError: getError(state.search)
+  }
+};
+
+/*result: getResult(state),
+  isFetching:getFetching(state),
+  isError: getError(state)*/
+
+/*
+search:{
+  result: getResult(state),
+    isFetching: getFetching(state),
+    isError: getError(state)
+}
+*/
+
+
+
 const mapDispatchToProps = { searchRequest };
 export default connect(
   mapStateToProps,

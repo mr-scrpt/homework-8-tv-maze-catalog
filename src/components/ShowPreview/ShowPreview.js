@@ -6,13 +6,13 @@ import {Link} from 'react-router-dom';
 
 export default class ShowPreview extends Component{
   render() {
-    const {name, id, image: {medium}, summary} = this.props;
+    const {name, id, image, summary} = this.props;
 
 
     return(
       <div className={`t-preview ${Style.container}`}>
         <Link to={`shows/${id}`}>{name}</Link>
-        <img src={medium} alt=""/>
+        {image && <img src={image} alt=""/>}
         <p>{summary}</p>
       </div>
     )
