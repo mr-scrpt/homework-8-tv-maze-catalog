@@ -18,18 +18,26 @@ class ShowPage extends Component{
   }
 
   render() {
-    //const {shows: {entities: {name, summary, _embedded, image: {medium} }, isFetching}} = this.props;
-    const {shows} = this.props;
-    const {entities, isFetching} = shows;
-    const {name, summary, _embedded, image } = entities;
-    console.log(image);
-    const {medium} = image;
+
+    const {shows: {entities: {name, summary, _embedded, image }, isFetching}} = this.props;
     if (isFetching) return <p>Данные загружаются</p>;
+    console.log(_embedded);
     return(
       <>
-        <p>{name}</p>
-        <img src="" alt=""/>
-        <div>2</div>
+        <p>{name && name}</p>
+        { image && image.medium && <img src={image.medium } alt="image"/> }
+        <div>{summary && summary}</div>
+        <div className={Style.cast}>
+          {_embedded && _embedded.cast && _embedded.cast.map(item=>{
+            const {person} = item;
+            return (
+              <div className="t-persone" key={person.id}>
+                <p>{person.name && person.name}</p>
+                {person.image && person.image.medium && <img src={person.image.medium} alt={item.person.name} />}
+              </div>
+            )
+          })}
+        </div>
       </>
     )
   }
