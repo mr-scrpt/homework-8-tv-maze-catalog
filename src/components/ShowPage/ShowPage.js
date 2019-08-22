@@ -5,3 +5,55 @@
 // и экшн showRequest.
 
 // В методе componentDidMount вам нужно будет диспатчить showRequest action
+import React, { Component } from 'react';
+import {connect} from "react-redux";
+import Style from './ShowPage.module.css'
+import {entitiesRequest} from "../../actions/actions";
+import {getFetching, getEntities} from '../../reducers/shows';
+
+class ShowPage extends Component{
+
+  componentDidMount() {
+    const {entitiesRequest, match: {params:{id}}} = this.props;
+    entitiesRequest(id);
+  }
+
+  render() {
+
+    const {entities: {name, summary, _embedded, image }, isFetching} = this.props;
+
+    if (isFetching) return <p>Данные загружаются</p>;
+    return(
+      <>
+        <p>{name}</p>
+        { image && image.medium && <img src={image.medium } alt="image"/> }
+        <div dangerouslySetInnerHTML={{__html: summary}} />
+        <div className={Style.cast}>
+          {_embedded && _embedded.cast && _embedded.cast.map(item=>{
+            const {person} = item;
+            return (
+              <div className="t-persone" key={person.id}>
+                <p>{person.name && person.name}</p>
+                {person.image && person.image.medium && <img src={person.image.medium} alt={item.person.name} />}
+              </div>
+            )
+          })}
+        </div>
+      </>
+    )
+  }
+}
+
+//const mapStateToProps = state => state;
+
+const mapStateToProps = ({shows}) => ({
+  entities: getEntities(shows),
+  isFetching: getFetching(shows)
+});
+const mapDispatchToProps = { entitiesRequest };
+
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ShowPage);
