@@ -30,6 +30,7 @@ export const getEntities = createSelector(
 );
 
 export const getFetching = state => state.isFetching;
+
 /*
 const initialState = {
   entities: [],

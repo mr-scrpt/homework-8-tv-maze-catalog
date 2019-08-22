@@ -13,19 +13,18 @@ import {getResult, getFetching, getError} from '../../reducers/search';
 
 class Search extends Component {
 
-  state={
+  state = {
     searchLabel: ''
   };
 
-  sendRequest = ()=>{
-    console.log('test here');
-    const { searchRequest } = this.props;
+  sendRequest = () => {
+    const {searchRequest} = this.props;
     const {searchLabel} = this.state;
     searchRequest(searchLabel);
   };
+
   render() {
     const {result, isFetching, isError} = this.props;
-    console.log(result);
     const {searchLabel} = this.state;
     if (isFetching) return <p>Данные загружаются</p>;
     if (isError) return <p>Ошибка при загрузке данных</p>;
@@ -37,7 +36,7 @@ class Search extends Component {
             type="text" className={`${Style.input} t-input`}
             placeholder="Название сериала"
             value={searchLabel}
-            onChange={(e)=>{
+            onChange={(e) => {
               this.setState({
                 searchLabel: e.target.value
               });
@@ -50,7 +49,7 @@ class Search extends Component {
           </div>
         </div>
         <div className={`t-search-result ${Style.searchPanel}`}>
-          {result && result.map(item => <ShowPreview {...item}  key={item.id}/>)}
+          {result && result.map(item => <ShowPreview {...item} key={item.id}/>)}
         </div>
       </React.Fragment>
     )
@@ -58,29 +57,14 @@ class Search extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
     result: getResult(state.search),
-    isFetching:getFetching(state.search),
+    isFetching: getFetching(state.search),
     isError: getError(state.search)
   }
 };
 
-/*result: getResult(state),
-  isFetching:getFetching(state),
-  isError: getError(state)*/
-
-/*
-search:{
-  result: getResult(state),
-    isFetching: getFetching(state),
-    isError: getError(state)
-}
-*/
-
-
-
-const mapDispatchToProps = { searchRequest };
+const mapDispatchToProps = {searchRequest};
 export default connect(
   mapStateToProps,
   mapDispatchToProps,

@@ -27,7 +27,7 @@ class ShowPage extends Component{
       <>
         <p>{name}</p>
         { image && image.medium && <img src={image.medium } alt="image"/> }
-        <div>{summary && summary}</div>
+        <div dangerouslySetInnerHTML={{__html: summary}} />
         <div className={Style.cast}>
           {_embedded && _embedded.cast && _embedded.cast.map(item=>{
             const {person} = item;
@@ -46,9 +46,9 @@ class ShowPage extends Component{
 
 //const mapStateToProps = state => state;
 
-const mapStateToProps = state => ({
-  entities: getEntities(state.shows),
-  isFetching: getFetching(state.shows)
+const mapStateToProps = ({shows}) => ({
+  entities: getEntities(shows),
+  isFetching: getFetching(shows)
 });
 const mapDispatchToProps = { entitiesRequest };
 
